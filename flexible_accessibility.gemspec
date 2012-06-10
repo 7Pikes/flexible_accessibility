@@ -25,6 +25,7 @@ Gem::Specification.new do |s|
     "README.md",
     "README.rdoc",
     "Rakefile",
+    "flexible_accessibility.gemspec",
     "lib/flexible_accessibility.rb",
     "lib/flexible_accessibility/controller_methods.rb",
     "lib/flexible_accessibility/exceptions.rb",
