@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new("> 1.3.1") if s.respond_to? :required_rubygems_version=
   s.authors = ["Sergey Awanesov"]
-  s.date = "2012-06-13"
+  s.date = "2012-07-01"
   s.description = "Flexible access control system for your rails application. Based on analysis of controller actions"
   s.email = "sergey.awanesov@gmail.com"
   s.extra_rdoc_files = [
@@ -26,6 +26,7 @@ Gem::Specification.new do |s|
     "README.rdoc",
     "Rakefile",
     "flexible_accessibility.gemspec",
+    "init.rb",
     "lib/flexible_accessibility.rb",
     "lib/flexible_accessibility/controller_methods.rb",
     "lib/flexible_accessibility/exceptions.rb",
