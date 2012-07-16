@@ -34,7 +34,7 @@ module FlexibleAccessibility
     
     # We checks url for each link in view to show it
     def has_access? controller, action
-      Permissions.is_action_permitted_for_user? "#{controller}##{action}", current_user
+      Permission.is_action_permitted_for_user? "#{controller}##{action}", current_user
     end
   end
 end
