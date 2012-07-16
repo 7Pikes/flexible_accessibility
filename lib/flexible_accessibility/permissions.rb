@@ -4,7 +4,7 @@ module FlexibleAccessibility
 	  def get_permissions
 		permissions = {}
 		Utils.new.get_controllers.each do |klass|
-		  permissions[klass.to_s.tableize.singularize.to_sym] = klass.instance_variable_get(:@_checkable_routes).collect{ |a| a.to_s }.join(', ')
+		  permissions[klass.to_sym] = klass.camelize.constantize.instance_variable_get(:@_checkable_routes).collect{ |a| a.to_s }.join(', ')
 		end
 		permissions
 	  end
