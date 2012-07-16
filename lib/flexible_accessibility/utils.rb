@@ -17,6 +17,7 @@ module FlexibleAccessibility
           @controllers << File.basename(path + entry) if File.extname(path + entry) == '.rb'
         end
       end
+      @controllers
     end
   end
 end
