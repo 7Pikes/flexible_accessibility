@@ -26,7 +26,7 @@ module FlexibleAccessibility
 	# And we expected the existing of current_user helper
 	def check_permission_to_route
 	  if self.class.instance_variable_get(:@_checkable_routes).include? current_action.to_sym
-	    self.class.instance_variable_set(:@_route_permitted, true) unless Permissions.is_action_permitted_for_user? current_route, current_user
+	    self.class.instance_variable_set(:@_route_permitted, true) unless Permission.is_action_permitted_for_user? current_route, current_user
 	  end
 	end
 
