@@ -5,6 +5,7 @@ module FlexibleAccessibility
       # Macro for skip authorization
       def skip_authorization_here
         self.instance_variable_set :@route_permitted, true
+        self.instance_variable_set :@checkable_routes, []
         self.send :before_filter, :check_if_route_permitted
       end
 
@@ -20,6 +21,7 @@ module FlexibleAccessibility
       #
       def set_actions_to_authorize args={}
         self.instance_variable_set :@checkable_routes, args[:only] unless args[:only].nil?
+        # TODO: understand and fix it
         self.instance_variable_set :@checkable_routes, self.action_methods - args[:except] unless args[:except].nil?  
       end
 
