@@ -12,7 +12,7 @@ module FlexibleAccessibility
   	  def authorize args={}
   	  	self.send :before_filter, :check_permission_to_route
         self.send :before_filter, :check_if_route_permitted
-        set_actions_to_authorize *args
+        set_actions_to_authorize args
   	  end
       
       private
