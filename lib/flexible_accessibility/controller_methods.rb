@@ -25,34 +25,30 @@ module FlexibleAccessibility
         self.instance_variable_set :@_checkable_routes, self.action_methods - args[:except] unless args[:except].nil?  
       end
     end
-
-    module InstanceMethods
-
-      private
-      # Detect current controller and action and return a permission
-      def current_resource
-        ActionController::Routing::Routes.recognize_path request.env["PATH_INFO"][:controller]
-      end
-
-      def current_action
-        ActionController::Routing::Routes.recognize_path request.env["PATH_INFO"][:action]
-      end
-
-      def current_route
-        "#{current_resource}##{current_action}"
-      end
-    end
  
     # Callback needs for include methods and define helper method
     def self.included base
       base.extend ClassMethods
-      base.include InstanceMethods
       base.helper_method :has_access?
     end
     
     # We checks url for each link in view to show it
     def has_access? controller, action
       Permissions.is_action_permitted_for_user? "#{controller}##{action}", current_user
+    end
+
+    private
+    # Detect current controller and action and return a permission
+    def current_resource
+      ActionController::Routing::Routes.recognize_path request.env["PATH_INFO"][:controller]
+    end
+
+    def current_action
+      ActionController::Routing::Routes.recognize_path request.env["PATH_INFO"][:action]
+    end
+
+    def current_route
+      "#{current_resource}##{current_action}"
     end
   end
 end
