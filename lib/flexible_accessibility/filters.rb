@@ -32,7 +32,7 @@ module FlexibleAccessibility
 
 	# We checks @authorized variable state
 	def check_if_route_permitted
-	  raise FlexibleAccessibility::AccessDeniedException unless self.class.instance_variable_get :@_route_permitted
+	  raise AccessDeniedException.new(nil, current_route, nil) unless self.class.instance_variable_get :@_route_permitted
 	end
   end
 

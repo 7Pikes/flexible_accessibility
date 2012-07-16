@@ -7,7 +7,7 @@ module FlexibleAccessibilty
       @message = message
       @action = action
       @subject = subject
-      @default_message = I18n.t('errors.access_denied')
+      @default_message = I18n.t('errors.access_denied', :action => @action)
     end
 
     def to_s
