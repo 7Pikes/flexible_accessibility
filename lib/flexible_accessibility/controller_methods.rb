@@ -45,7 +45,7 @@ module FlexibleAccessibility
     # Callback needs for include methods and define helper method
     def self.included base
       base.extend ClassMethods
-      base.helper_method has_access?
+      base.helper_method :has_access?
     end
     
     # We checks url for each link in view to show it
