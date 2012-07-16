@@ -10,11 +10,13 @@ module FlexibleAccessibility
 	private
     # Detect current controller and action and return a permission
     def current_resource
-      ActionController::Routing::Routes.recognize_path request.env["PATH_INFO"][:controller]
+      # ActionController::Routing::Routes.recognize_path request.env["PATH_INFO"][:controller]
+      params[:controller]
     end
 
     def current_action
-      ActionController::Routing::Routes.recognize_path request.env["PATH_INFO"][:action]
+      # ActionController::Routing::Routes.recognize_path request.env["PATH_INFO"][:action]
+      params[:action]
     end
 
     def current_route
