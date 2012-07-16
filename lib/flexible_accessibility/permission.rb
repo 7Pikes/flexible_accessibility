@@ -1,7 +1,7 @@
 module FlexibleAccessibility
-  class Permissions
+  class Permission
   	class << self
-	  def get_permissions
+	  def all
 		permissions = {}
 		Utils.new.get_controllers.each do |klass|
 		  permissions[klass.to_sym] = klass.camelize.constantize.instance_variable_get(:@_checkable_routes).collect{ |a| a.to_s }.join(', ')
@@ -9,11 +9,13 @@ module FlexibleAccessibility
 		permissions
 	  end
 
+      # Stub methods
 	  def is_action_permitted? action
+	  	false
 	  end
 
 	  def is_action_permitted_for_user? action, user
-	  	!self.where(["action = ? and user_id = ?", action, user.id]).empty?
+	  	false 
 	  end
 	end
   end
