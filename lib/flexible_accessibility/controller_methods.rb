@@ -42,15 +42,15 @@ module FlexibleAccessibility
       end
     end
 
+    # We checks url for each link in view to show it
+    def has_access? controller, action
+      Permissions.is_action_permitted_for_user? "#{controller}##{action}", current_user
+    end
+
     # Callback needs for include methods and define helper method
     def self.included base
     	base.extend ClassMethods
     	base.helper_method has_access?
-    end
-
-    # We checks url for each link in view to show it
-    def has_access? controller, action
-      Permissions.is_action_permitted_for_user? "#{controller}##{action}", current_user
     end
   end
 end
