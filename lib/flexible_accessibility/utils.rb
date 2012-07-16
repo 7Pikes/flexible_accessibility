@@ -14,7 +14,7 @@ module FlexibleAccessibility
         if File.directory? path + entry
           get_controllers_recursive path + entry + '/'
         else
-          @controllers << File.basename(path + entry) if File.extname(path + entry) == '.rb'
+          @controllers << File.basename(path + entry, ".*") if File.extname(path + entry) == '.rb'
         end
       end
       @controllers
