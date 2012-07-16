@@ -36,20 +36,6 @@ module FlexibleAccessibility
     def has_access? controller, action
       Permissions.is_action_permitted_for_user? "#{controller}##{action}", current_user
     end
-
-    private
-    # Detect current controller and action and return a permission
-    def current_resource
-      ActionController::Routing::Routes.recognize_path request.env["PATH_INFO"][:controller]
-    end
-
-    def current_action
-      ActionController::Routing::Routes.recognize_path request.env["PATH_INFO"][:action]
-    end
-
-    def current_route
-      "#{current_resource}##{current_action}"
-    end
   end
 end
 

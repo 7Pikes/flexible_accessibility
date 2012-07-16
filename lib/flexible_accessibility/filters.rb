@@ -7,6 +7,19 @@ module FlexibleAccessibility
   	  append_before_filter :check_if_route_permitted
   	end
 	  
+	private
+    # Detect current controller and action and return a permission
+    def current_resource
+      ActionController::Routing::Routes.recognize_path request.env["PATH_INFO"][:controller]
+    end
+
+    def current_action
+      ActionController::Routing::Routes.recognize_path request.env["PATH_INFO"][:action]
+    end
+
+    def current_route
+      "#{current_resource}##{current_action}"
+    end
 	# We checks access to route
 	# And we expected the existing of current_user helper
 	def check_permission_to_route
