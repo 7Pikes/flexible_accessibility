@@ -12,7 +12,8 @@ module FlexibleAccessibility
     def get_controllers_recursive path
       (Dir.new(path).entries - ["..", "."]).each do |entry|
         if File.directory? path + entry
-          get_controllers_recursive path + entry + '/'
+          #get_controllers_recursive path + entry + '/'
+          next
         else
           @controllers << File.basename(path + entry, ".*")
         end
