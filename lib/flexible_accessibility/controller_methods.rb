@@ -10,6 +10,7 @@ module FlexibleAccessibility
 
       # Macro for define authorization
   	  def authorize args={}
+        self.instance_variable_set :@route_permitted, false
   	  	self.send :before_filter, :check_permission_to_route
         self.send :before_filter, :check_if_route_permitted
         set_actions_to_authorize args
