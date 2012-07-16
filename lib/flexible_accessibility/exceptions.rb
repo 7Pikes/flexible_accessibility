@@ -1,5 +1,5 @@
 module FlexibleAccessibilty
-	class AccessDeniedException < Error
+	class AccessDeniedException < StandardError
 		attr_reader :action, :subject
     attr_writer :default_message
 
