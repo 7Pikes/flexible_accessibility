@@ -46,7 +46,7 @@ module FlexibleAccessibility
     # Callback needs for include methods and define helper method
     def self.included base
       base.extend ClassMethods
-      base.extend InstanceMethods
+      base.include InstanceMethods
       base.helper_method :has_access?
     end
     
