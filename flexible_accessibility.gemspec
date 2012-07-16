@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = "flexible_accessibility"
-  s.version = "0.1.6.pre"
+  s.version = "0.1.8.pre"
 
   s.required_rubygems_version = Gem::Requirement.new("> 1.3.1") if s.respond_to? :required_rubygems_version=
   s.authors = ["Sergey Awanesov"]
@@ -30,7 +30,9 @@ Gem::Specification.new do |s|
     "lib/flexible_accessibility.rb",
     "lib/flexible_accessibility/controller_methods.rb",
     "lib/flexible_accessibility/exceptions.rb",
-    "lib/flexible_accessibility/permissions.rb",
+    "lib/flexible_accessibility/filters.rb",
+    "lib/flexible_accessibility/permission.rb",
+    "lib/flexible_accessibility/utils.rb",
     "test/helper.rb",
     "test/test_flexible_accessibility.rb"
   ]
