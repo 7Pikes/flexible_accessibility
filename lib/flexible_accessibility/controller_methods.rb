@@ -2,44 +2,55 @@ module FlexibleAccessibility
   module ControllerMethods
   	module ClassMethods
 
-      #
-      def skip_authorization_on_resource
-        @authorized = true
+      # Macro for skip authorization
+      def skip_authorization_here
+        self.instance_variable_set :@route_permitted, true
+        self.send :before_filter, :check_if_route_permitted
       end
 
-      #
-  	  def authorize *args
-  	  	self.send :before_filter, :check_access_to_resource, *args
+      # Macro for define authorization
+  	  def authorize args={}
+  	  	self.send :before_filter, :check_permission_to_route
+        self.send :before_filter, :check_if_route_permitted
+        set_actions_to_authorize *args
   	  end
-
+      
+      private
       #
-      def current_action
-        path = ActionController::Routing::Routes.recognize_path request.env["PATH_INFO"]
-        @fa_path = [path[:controller], path[:action]]
+      def set_actions_to_authorize args={}
+        self.instance_variable_set :@checkable_routes, args[:only] unless args[:only].nil?
+        self.instance_variable_set :@checkable_routes, self.action_methods - args[:except] unless args[:except].nil?  
       end
 
       #
-      def check_access_to_resource
-        if @actions.include current_action[1].to_sym
-          @authorized = true unless Permission.check_access "#{current_action[0]}##{current_action[1]}", current_action
+      def current_route
+        path = ActionController::Routing::Routes.recognize_path request.env["PATH_INFO"]
+        [path[:controller], path[:action]]
+      end
+
+      # We checks access to route
+      # And we expected the existing of current_user helper
+      def check_permission_to_route
+        if self.instance_variable_get(:@checkable_routes).include? current_route[1].to_sym
+          self.instance_variable_set(:@route_permitted, true) unless Permissions.is_action_permitted_for_user? "#{current_route[0]}##{current_route[1]}", current_user
         end
       end
 
-      #
-      def check_if_authorized
-        raise FlexibleAccessibility::AccessDeniedException unless @authorized
-      end
-      
-      #
-      def has_access? controller, action
-        Permission.check_access "#{controller}##{action}", current_action
+      # We checks @authorized variable state
+      def check_if_route_permitted
+        raise FlexibleAccessibility::AccessDeniedException unless self.instance_variable_get :@route_permitted
       end
     end
 
-    #
+    # Callback needs for include methods and define helper method
     def self.included base
     	base.extend ClassMethods
     	base.helper_method has_access?
+    end
+
+    # We checks url for each link in view to show it
+    def has_access? controller, action
+      Permissions.is_action_permitted_for_user? "#{controller}##{action}", current_user
     end
   end
 end

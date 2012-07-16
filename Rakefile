@@ -15,7 +15,7 @@ require 'jeweler'
 Jeweler::Tasks.new do |gem|
   # gem is a Gem::Specification... see http://docs.rubygems.org/read/chapter/20 for more options
   gem.name = "flexible_accessibility"
-  gem.version = "0.1.2.pre"
+  gem.version = "0.1.3.pre"
   gem.homepage = "http://github.com/mochnatiy/flexible_accessibility"
   gem.license = "MIT"
   gem.summary = %Q{Flexible access control system}
@@ -46,7 +46,6 @@ task :default => :test
 require 'rdoc/task'
 Rake::RDocTask.new do |rdoc|
   version = File.exist?('VERSION') ? File.read('VERSION') : ""
-
   rdoc.rdoc_dir = 'rdoc'
   rdoc.title = "flexible_accessibility #{version}"
   rdoc.rdoc_files.include('README*')
