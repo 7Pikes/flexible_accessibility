@@ -41,23 +41,23 @@ module FlexibleAccessibility
         raise FlexibleAccessibility::AccessDeniedException unless self.instance_variable_get :@route_permitted
       end
     end
-
+ 
+    # Callback needs for include methods and define helper method
+    def self.included base
+      base.extend ClassMethods
+      base.helper_method has_access?
+    end
+    
     # We checks url for each link in view to show it
     def has_access? controller, action
       Permissions.is_action_permitted_for_user? "#{controller}##{action}", current_user
-    end
-
-    # Callback needs for include methods and define helper method
-    def self.included base
-    	base.extend ClassMethods
-    	base.helper_method has_access?
     end
   end
 end
 
 #
-if defined? ActionController
-	ActionController.class_eval do
+if defined? ActionController::Base
+	ActionController::Base.class_eval do
 	  include FlexibleAccessibility::ControllerMethods	
 	end
 end
