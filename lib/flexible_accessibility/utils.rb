@@ -15,7 +15,7 @@ module FlexibleAccessibility
           #get_controllers_recursive path + entry + '/'
           next
         else
-          @controllers << File.basename(path + entry, ".*")
+          @controllers << File.basename(path + entry, ".*") unless File.basename(path + entry, ".*") == "application_controller"
         end
       end
       @controllers
