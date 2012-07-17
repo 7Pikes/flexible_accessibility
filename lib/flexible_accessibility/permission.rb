@@ -3,9 +3,9 @@ module FlexibleAccessibility
     attr_reader :controller
     attr_reader :actions
 
-    def initialize
-      @controller = ""
-      @actions = []
+    def initialize args={}
+      @controller = args[:controller]
+      @actions = args[:actions]
     end
 
   	class << self
