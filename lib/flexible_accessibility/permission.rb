@@ -1,10 +1,18 @@
 module FlexibleAccessibility
   class Permission
+    attr_reader :controller
+    attr_reader :actions
+
+    def initialize
+      @controller = ""
+      @actions = []
+    end
+
   	class << self
 	  def all
-		permissions = {}
+		permissions = []
 		Utils.new.get_controllers.each do |klass|
-		  permissions[klass.to_sym] = klass.camelize.constantize.instance_variable_get(:@_checkable_routes).collect{ |a| a.to_s }.join(', ')
+		  permissions << Permission.new(:controller => klass.to_sym, :actions => klass.camelize.constantize.instance_variable_get(:@_checkable_routes))
 		end
 		permissions
 	  end
