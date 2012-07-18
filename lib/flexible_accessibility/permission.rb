@@ -18,11 +18,11 @@ module FlexibleAccessibility
 	  end
 
       # Stub methods
-	  def is_action_permitted? action
-	  	false
+	  def is_action_permitted? permission
+	  	self.is_action_permitted_for_user? permission, current_user
 	  end
 
-	  def is_action_permitted_for_user? action, user
+	  def is_action_permitted_for_user? permission, user
 	  	false 
 	  end
 	end
