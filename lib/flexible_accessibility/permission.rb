@@ -12,7 +12,7 @@ module FlexibleAccessibility
 	  def all
 		permissions = []
 		Utils.new.get_controllers.each do |klass|
-		  permissions << Permission.new(:controller => klass.gsub!(/_controller/, "").to_sym, :actions => klass.camelize.constantize.instance_variable_get(:@_checkable_routes))
+		  permissions << Permission.new(:controller => klass.gsub(/_controller/, "").to_sym, :actions => klass.camelize.constantize.instance_variable_get(:@_checkable_routes))
 		end
 		permissions
 	  end
