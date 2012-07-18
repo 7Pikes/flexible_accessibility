@@ -23,7 +23,7 @@ module FlexibleAccessibility
 	  end
 
 	  def is_action_permitted_for_user? permission, user
-	  	false 
+	  	!AccessRule.where(["permission = ? and user_id = ?", permission, user.id]).empty?
 	  end
 	end
   end
