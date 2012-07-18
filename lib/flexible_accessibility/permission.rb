@@ -12,7 +12,7 @@ module FlexibleAccessibility
 	  def all
 		permissions = []
 		Utils.new.get_controllers.each do |klass|
-		  permissions << Permission.new(:controller => klass.to_sym, :actions => klass.camelize.constantize.instance_variable_get(:@_checkable_routes))
+		  permissions << Permission.new(:controller => klass.delete("_controller").to_sym, :actions => klass.camelize.constantize.instance_variable_get(:@_checkable_routes))
 		end
 		permissions
 	  end
@@ -23,6 +23,7 @@ module FlexibleAccessibility
 	  end
 
 	  def is_action_permitted_for_user? permission, user
+	  	# TODO: Avoid these code, maybe handle a callback included in application
 	  	!AccessRule.where(["permission = ? and user_id = ?", permission, user.id]).empty?
 	  end
 	end

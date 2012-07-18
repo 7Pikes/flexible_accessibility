@@ -6,14 +6,11 @@ module FlexibleAccessibility
       def skip_authorization_here
         self.instance_variable_set :@_route_permitted, true
         self.instance_variable_set :@_checkable_routes, []
-        #self.send :before_filter, :check_if_route_permitted
       end
 
       # Macro for define authorization
   	  def authorize args={}
         self.instance_variable_set :@_route_permitted, false
-  	  	#self.send :before_filter, :check_permission_to_route
-        #self.send :before_filter, :check_if_route_permitted
         set_actions_to_authorize args
   	  end
       
@@ -34,13 +31,12 @@ module FlexibleAccessibility
     
     # We checks url for each link in view to show it
     def has_access? permission, user
-      puts '--------------------hello-----------------------'
       Permission.is_action_permitted_for_user? permission, user
     end
   end
 end
 
-#
+# We include methods in ActionController::Base
 if defined? ActionController::Base
 	ActionController::Base.class_eval do
 	  include FlexibleAccessibility::ControllerMethods	
