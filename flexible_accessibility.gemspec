@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = "flexible_accessibility"
-  s.version = "0.1.95.pre"
+  s.version = "0.1.2.pre"
 
   s.required_rubygems_version = Gem::Requirement.new("> 1.3.1") if s.respond_to? :required_rubygems_version=
   s.authors = ["Sergey Awanesov"]
-  s.date = "2012-07-18"
+  s.date = "2012-07-25"
   s.description = "Flexible access control system for your rails application. Based on analysis of controller actions"
   s.email = "sergey.awanesov@gmail.com"
   s.extra_rdoc_files = [
