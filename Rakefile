@@ -15,7 +15,7 @@ require 'jeweler'
 Jeweler::Tasks.new do |gem|
   # gem is a Gem::Specification... see http://docs.rubygems.org/read/chapter/20 for more options
   gem.name = "flexible_accessibility"
-  gem.version = "0.2.0.pre"
+  gem.version = "0.2.1.pre"
   gem.homepage = "http://github.com/mochnatiy/flexible_accessibility"
   gem.license = "MIT"
   gem.summary = %Q{Flexible access control system}
