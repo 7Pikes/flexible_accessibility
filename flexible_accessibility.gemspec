@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = "flexible_accessibility"
-  s.version = "0.2.3.pre"
+  s.version = "0.2.4.pre"
 
   s.required_rubygems_version = Gem::Requirement.new("> 1.3.1") if s.respond_to? :required_rubygems_version=
   s.authors = ["Sergey Awanesov"]
