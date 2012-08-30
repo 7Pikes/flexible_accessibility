@@ -14,7 +14,8 @@ module FlexibleAccessibility
         if File.directory? path + entry
           get_controllers_recursive path + entry + '/'
         else
-          container = File.dirname(path + entry) == "controllers" ? "default" : File.dirname(path + entry)
+          parent_directory = File.dirname(path + entry).split(/\//).last
+          container = parent_directory == "controllers" ? "default" : parent_directory
           @controllers[container.to_sym] << File.basename(path + entry, ".*") unless File.basename(path + entry, ".*") == "application_controller"
         end
       end
