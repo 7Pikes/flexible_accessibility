@@ -11,8 +11,12 @@ module FlexibleAccessibility
   	class << self
 		  def all
 				permissions = []
-				Utils.new.get_controllers.each do |klass|
-				  permissions << Permission.new(:controller => klass.gsub(/_controller/, "").to_sym, :actions => klass.camelize.constantize.instance_variable_get(:@_checkable_routes))
+				Utils.new.get_controllers.each do |scope|
+					namespace = scope.first
+				  (scope - namespace.to_a).each do |klass|
+				  	klass = "#{namespace}::#{klass}" unless namespace == "default"
+				  	permissions << Permission.new(:controller => klass.gsub(/_controller/, "").to_sym, :actions => ApplicationResource.new(klass).klass.instance_variable_get(:@_checkable_routes))
+				  end
 				end
 				permissions
 	  	end
