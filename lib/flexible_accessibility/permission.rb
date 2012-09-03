@@ -1,11 +1,19 @@
 module FlexibleAccessibility
   class Permission
-    attr_reader :controller
+    attr_reader :resource
     attr_reader :actions
 
     def initialize args={}
-      @controller = args[:controller]
+      @resource = args[:resource]
       @actions = args[:actions]
+    end
+
+    def controller
+    	ApplicationResource.new(self.resource).controller
+    end
+
+    def namespace
+    	ApplicationResource.new(self.resource).namespace
     end
 
   	class << self
@@ -13,9 +21,9 @@ module FlexibleAccessibility
 				permissions = []
 				Utils.new.get_controllers.each do |scope|
 					namespace = scope.first
-				  (scope - namespace.to_a).each do |klass|
-				  	klass = "#{namespace}::#{klass}" unless namespace == "default"
-				  	permissions << Permission.new(:controller => klass.gsub(/_controller/, "").to_sym, :actions => ApplicationResource.new(klass).klass.instance_variable_get(:@_checkable_routes))
+				  (scope - namespace.to_a).each do |resource|
+				  	resource = "#{namespace}::#{resource}" unless namespace == "default"
+				  	permissions << Permission.new(:resource => resource.gsub(/_controller/, "").to_sym, :actions => ApplicationResource.new(resource).klass.instance_variable_get(:@_checkable_routes))
 				  end
 				end
 				permissions
