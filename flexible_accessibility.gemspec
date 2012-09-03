@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = "flexible_accessibility"
-  s.version = "0.2.4.pre"
+  s.version = "0.2.6.pre"
 
   s.required_rubygems_version = Gem::Requirement.new("> 1.3.1") if s.respond_to? :required_rubygems_version=
   s.authors = ["Sergey Awanesov"]
-  s.date = "2012-08-30"
+  s.date = "2012-09-03"
   s.description = "Flexible access control system for your rails application. Based on analysis of controller actions"
   s.email = "sergey.awanesov@gmail.com"
   s.extra_rdoc_files = [
@@ -32,6 +32,7 @@ Gem::Specification.new do |s|
     "lib/flexible_accessibility/exceptions.rb",
     "lib/flexible_accessibility/filters.rb",
     "lib/flexible_accessibility/permission.rb",
+    "lib/flexible_accessibility/resource.rb",
     "lib/flexible_accessibility/utils.rb",
     "test/helper.rb",
     "test/test_flexible_accessibility.rb"
