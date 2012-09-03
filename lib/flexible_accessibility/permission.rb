@@ -20,8 +20,8 @@ module FlexibleAccessibility
 		  def all
 				permissions = []
 				Utils.new.get_controllers.each do |scope|
-					namespace = scope.first
-				  (scope - [namespace]).each do |resource|
+					namespace = scope.first.to_s
+				  (scope.last - [namespace]).each do |resource|
 				  	resource = "#{namespace}::#{resource}" unless namespace == "default"
 				  	permissions << Permission.new(:resource => resource.gsub(/_controller/, "").to_sym, :actions => ApplicationResource.new(resource).klass.instance_variable_get(:@_checkable_routes))
 				  end
