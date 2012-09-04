@@ -5,7 +5,7 @@ module FlexibleAccessibility
 
 	  def initialize resource_string
 	  	@controller = resource_string.split("/").last
-	  	@namespace = resource_string.split("/").first == @controller ? "default" : resource_string.split("/").last
+	  	@namespace = resource_string.split("/").first == @controller ? "default" : resource_string.split("/").first
 	  end
 
 		def klass
