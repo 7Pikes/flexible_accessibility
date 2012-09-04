@@ -8,6 +8,6 @@ Installation:
 
   or add to your Gemfile
 
-		gem "flexible_accesibility", "~> 0.3.0"
+		gem "flexible_accessibility", "~> 0.3.0"
 		
 ======================
