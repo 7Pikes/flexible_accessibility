@@ -17,12 +17,13 @@ module FlexibleAccessibility
     end
 
   	class << self
+  		# TODO: this function may be recursive because nesting may be existed
 		  def all
 				permissions = []
 				Utils.new.get_controllers.each do |scope|
 					namespace = scope.first.to_s
-				  (scope.last - [namespace]).each do |resource|
-				  	resource = "#{namespace}::#{resource}" unless namespace == "default"
+				  scope.last.each do |resource|
+				  	resource = "#{namespace}/#{resource}" unless namespace == "default"
 				  	permissions << Permission.new(:resource => resource.gsub(/_controller/, "").to_sym, :actions => ApplicationResource.new(resource).klass.instance_variable_get(:@_checkable_routes))
 				  end
 				end

@@ -4,8 +4,8 @@ module FlexibleAccessibility
 		attr_reader :namespace
 
 	  def initialize resource_string
-	  	@controller = resource_string.split("::").last
-	  	@namespace = resource_string.split("::").first
+	  	@controller = resource_string.split("/").last
+	  	@namespace = resource_string.split("/").first == @controller ? "default" : resource_string.split("/").last
 	  end
 
 		def klass

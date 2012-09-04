@@ -4,9 +4,10 @@ A simple library for setting access rules, based on analysis of current resource
 
 Installation:
 
-	gem install flexible_accessibility
+		gem install flexible_accessibility
 
-	or add to your Gemfile
+  or add to your Gemfile
 
-	gem "flexible_accesibility", "~> 0.3.0"
+		gem "flexible_accesibility", "~> 0.3.0"
+		
 ======================
