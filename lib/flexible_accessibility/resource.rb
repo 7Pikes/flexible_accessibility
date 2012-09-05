@@ -9,8 +9,8 @@ module FlexibleAccessibility
 	  end
 
 		def klass
-			(@namespace.camelize + "::" + @controller.camelize).constantize unless is_standard_resource?
-			@controller.camelize.constantize if is_standard_resource?
+			(@namespace.camelize + "::" + @controller.camelize).constantize unless self.is_standard_resource?
+			@controller.camelize.constantize if self.is_standard_resource?
 		end
 
 		def is_standard_resource?
