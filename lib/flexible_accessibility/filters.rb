@@ -6,7 +6,7 @@ module FlexibleAccessibility
   	  append_before_filter :check_permission_to_route
   	  append_before_filter :check_if_route_permitted
   	end
-	  
+
 	  private
     # Detect current controller and action and return a permission
     def current_resource
@@ -27,7 +27,7 @@ module FlexibleAccessibility
   	def check_permission_to_route
       if self.class.instance_variable_get(:@_checkable_routes).include? current_action.to_sym
         raise UserNotLoggedInException.new(current_route, nil) if current_user.nil?
-  	    self.class.instance_variable_set :@_route_permitted, Permission.is_action_permitted_for_user?(current_route, current_user)
+  	    self.class.instance_variable_set :@_route_permitted, current_permissions.is_action_permitted?(current_route)
       else
         self.class.instance_variable_set :@_route_permitted, true
   	  end
