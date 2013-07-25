@@ -3,7 +3,7 @@ module FlexibleAccessibility
     attr_reader :resource
     attr_reader :actions
 
-    def initialize args={}
+    def initialize(args={})
       @resource = args[:resource]
       @actions = args[:actions]
     end
@@ -31,7 +31,7 @@ module FlexibleAccessibility
 	  	end
 
 		  def is_action_permitted? permission
-		  	self.is_action_permitted_for_user? permission, current_user
+		  	self.is_action_permitted_for_user?(permission, current_user)
 		  end
 
 		  def is_action_permitted_for_user? permission, user
