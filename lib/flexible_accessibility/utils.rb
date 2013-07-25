@@ -6,14 +6,14 @@ module FlexibleAccessibility
     end
 
     def get_controllers
-      get_controllers_recursive @path
+      get_controllers_recursive(@path)
     end
 
     # All controller clases placed in :default scope
-    def get_controllers_recursive path
+    def get_controllers_recursive(path)
       (Dir.new(path).entries - ["..", "."]).each do |entry|
-        if File.directory? path + entry
-          get_controllers_recursive path + entry + '/'
+        if File.directory?(path + entry)
+          get_controllers_recursive(path + entry + '/')
         else
           parent_directory = File.dirname(path + entry).split(/\//).last
           container = parent_directory == "controllers" ? "default" : parent_directory
