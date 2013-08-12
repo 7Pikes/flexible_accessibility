@@ -3,8 +3,8 @@ module FlexibleAccessibility
   	extend ActiveSupport::Concern
 
   	included do
-  	  append_before_filter :check_permission_to_route
-  	  append_before_filter :check_if_route_permitted
+  	  append_before_filter(:check_permission_to_route)
+  	  append_before_filter(:check_if_route_is_permitted)
   	end
 
 	  private
@@ -22,19 +22,20 @@ module FlexibleAccessibility
     def current_route
       "#{current_resource}##{current_action}"
     end
-  	# We checks access to route
-  	# And we expected the existing of current_user helper
+
+  	# Check access to route
+  	# Expected the existing of current_user helper
   	def check_permission_to_route
       if self.class.instance_variable_get(:@_checkable_routes).include? current_action.to_sym
         raise UserNotLoggedInException.new(current_route, nil) if current_user.nil?
-  	    self.class.instance_variable_set :@_route_permitted, current_permissions.is_action_permitted?(current_route)
+  	    self.class.instance_variable_set(:@_route_permitted, Permission.is_action_permitted_for_user?(current_route, current_user))
       else
-        self.class.instance_variable_set :@_route_permitted, true
+        self.class.instance_variable_set(:@_route_permitted, true)
   	  end
   	end
 
-  	# We checks @authorized variable state
-  	def check_if_route_permitted
+  	# Check the @authorized variable state
+  	def check_if_route_is_permitted
   	  raise AccessDeniedException.new(current_route, nil) unless self.class.instance_variable_get :@_route_permitted
 	  end
   end
