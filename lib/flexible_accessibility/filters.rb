@@ -23,12 +23,17 @@ module FlexibleAccessibility
       "#{current_resource}##{current_action}"
     end
 
+    # Expected the existing of current_user helper
+    def logged_user
+      return current_user if defined?(current_user)
+      raise NoWayToDetectLoggerUserException unless defined?(current_user)
+    end
+
   	# Check access to route
-  	# Expected the existing of current_user helper
   	def check_permission_to_route
       if self.class.instance_variable_get(:@_checkable_routes).include? current_action.to_sym
-        raise UserNotLoggedInException.new(current_route, nil) if current_user.nil?
-  	    self.class.instance_variable_set(:@_route_permitted, Permission.is_action_permitted_for_user?(current_route, current_user))
+        raise UserNotLoggedInException.new(current_route, nil) if logged_user.nil?
+  	    self.class.instance_variable_set(:@_route_permitted, AccessProvider.is_action_permitted_for_user?(current_route, logged_user))
       else
         self.class.instance_variable_set(:@_route_permitted, true)
   	  end
@@ -36,7 +41,7 @@ module FlexibleAccessibility
 
   	# Check the @authorized variable state
   	def check_if_route_is_permitted
-  	  raise AccessDeniedException.new(current_route, nil) unless self.class.instance_variable_get :@_route_permitted
+  	  raise AccessDeniedException.new(current_route, nil) unless self.class.instance_variable_get(:@_route_permitted)
 	  end
   end
 

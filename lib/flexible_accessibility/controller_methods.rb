@@ -31,7 +31,8 @@ module FlexibleAccessibility
     
     # Check the url for each link in view to show it
     def has_access?(permission, user)
-      Permission.is_action_permitted_for_user?(permission, user)
+      raise UnknownUserException if user.nil?
+      AccessProvider.is_action_permitted_for_user? permission, user
     end
   end
 end

@@ -2,12 +2,10 @@ module FlexibleAccessibility
   class Permission
     attr_reader :resource
     attr_reader :actions
-    attr_reader :permissions
 
     def initialize(args={})
       @resource = args[:resource]
       @actions = args[:actions]
-      @available_permissions = AccessRule.where(:user_id => args[:current_user]).map(&:permission) || []
     end
 
     def controller
@@ -31,15 +29,6 @@ module FlexibleAccessibility
   			end
   			permissions
     	end
-
-  	  def is_action_permitted? permission
-  	  	permissions.include?(permission)
-  	  end
-
-      def is_action_permitted_for_user? permission, user
-        # TODO: Avoid these code, maybe handle a callback included in application
-        !AccessRule.where(["permission = ? and user_id = ?", permission, user.id]).empty?
-      end
     end
   end
 end
