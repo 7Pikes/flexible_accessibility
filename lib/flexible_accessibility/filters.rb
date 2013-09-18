@@ -29,7 +29,7 @@ module FlexibleAccessibility
         raise UserNotLoggedInException.new(current_route, nil) if current_user.nil?
   	    self.class.instance_variable_set(:@_route_permitted, Permission.is_action_permitted_for_user?(current_route, current_user))
       else
-        self.class.instance_variable_set(:@_route_permitted, true)
+        self.class.instance_variable_set(:@_route_permitted, false)
   	  end
   	end
 
