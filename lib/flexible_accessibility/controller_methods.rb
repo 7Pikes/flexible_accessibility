@@ -5,7 +5,7 @@ module FlexibleAccessibility
       # Macro for skip authorization
       def skip_authorization_here
         self.instance_variable_set(:@_route_permitted, true)
-        self.instance_variable_set(:@_checkable_routes, [])
+        self.instance_variable_set(:@_verifiable_routes, [])
       end
 
       # Macro for define authorization
@@ -17,9 +17,9 @@ module FlexibleAccessibility
       private
       # Set actions for authorize as instance variable
       def set_actions_to_authorize(args={})
-        self.instance_variable_set(:@_checkable_routes, args[:only]) unless args[:only].nil?
+        self.instance_variable_set(:@_verifiable_routes, args[:only]) unless args[:only].nil?
         # TODO: understand and fix it
-        self.instance_variable_set(:@_checkable_routes, self.action_methods - args[:except]) unless args[:except].nil?  
+        self.instance_variable_set(:@_verifiable_routes, self.action_methods - args[:except]) unless args[:except].nil?
       end
     end
  
