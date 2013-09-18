@@ -15,7 +15,7 @@ test/version_tmp
 tmp
 .rvmrc
 .DS_Store
-
+.idea
 # YARD artifacts
 .yardoc
 _yardoc
