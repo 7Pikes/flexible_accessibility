@@ -17,9 +17,21 @@ module FlexibleAccessibility
       private
       # Set actions for authorize as instance variable
       def set_actions_to_authorize(args={})
-        self.instance_variable_set(:@_verifiable_routes, args[:only]) unless args[:only].nil?
-        # TODO: understand and fix it
-        self.instance_variable_set(:@_verifiable_routes, self.action_methods - args[:except]) unless args[:except].nil?
+        valid_arguments = parse_and_validate_arguments(args)
+        self.instance_variable_set(:@_verifiable_routes, valid_arguments[:only]) unless valid_arguments[:only].nil?
+        self.instance_variable_set(:@_verifiable_routes, self.action_methods - valid_arguments[:except]) unless valid_arguments[:except].nil?
+        self.instance_variable_set(:@_verifiable_routes, self.action_methods) if valid_arguments[:all]
+      end
+
+      def parse_and_validate_arguments(args={})
+        result = {}
+        (result[:all] = true) and return if args.to_s == "all"
+        [:only, :except].each do |key|
+          unless args[key].nil?
+            raise ActionsValueException unless args[key].instance_of?(Array)
+            result[key] = args[key].map!{ |v| v.to_s }.to_set
+          end
+        end
       end
     end
  

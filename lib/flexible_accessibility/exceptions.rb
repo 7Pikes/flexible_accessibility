@@ -43,4 +43,15 @@ module FlexibleAccessibility
       "Current user is not logged in"
     end
   end
+
+  class ActionsValueException < FlexibleAccessibilityException
+    private
+    def message
+      I18n.t('flexible_accessibility.errors.incorrect_value_of_actions')
+    end
+
+    def default_message
+      "The value of any 'authorize' macro argument should be declared as Array"
+    end
+  end
 end
