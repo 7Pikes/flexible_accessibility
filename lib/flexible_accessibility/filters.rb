@@ -22,12 +22,14 @@ module FlexibleAccessibility
     def current_route
       "#{current_resource}##{current_action}"
     end
-  	# We checks access to route
-  	# And we expected the existing of current_user helper
+
+  	# We checks access to route and we expected the existing of current_user helper
   	def check_permission_to_route
+      raise UserNotLoggedInException.new(current_route, nil) if current_user.nil?
       if self.class.instance_variable_get(:@_verifiable_routes).include? current_action.to_sym
-        raise UserNotLoggedInException.new(current_route, nil) if current_user.nil?
   	    self.class.instance_variable_set(:@_route_permitted, Permission.is_action_permitted_for_user?(current_route, current_user))
+      elsif self.class.instance_variable_get(:@_non_verifiable_routes).include? current_action.to_sym
+        self.class.instance_variable_set(:@_route_permitted, true)
       else
         self.class.instance_variable_set(:@_route_permitted, false)
   	  end
