@@ -2,6 +2,7 @@
 
 require 'rubygems'
 require 'bundler'
+
 begin
   Bundler.setup(:default, :development)
 rescue Bundler::BundlerError => e
@@ -11,37 +12,12 @@ rescue Bundler::BundlerError => e
 end
 require 'rake'
 
-require 'jeweler'
-Jeweler::Tasks.new do |gem|
-  # gem is a Gem::Specification... see http://docs.rubygems.org/read/chapter/20 for more options
-  gem.name = "flexible_accessibility"
-  gem.version = "0.2.99.pre"
-  gem.homepage = "http://github.com/mochnatiy/flexible_accessibility"
-  gem.license = "MIT"
-  gem.summary = %Q{Flexible access control system}
-  gem.description = %Q{Flexible access control system for your rails application. Based on analysis of controller actions}
-  gem.email = "sergey.awanesov@gmail.com"
-  gem.authors = ["Sergey Awanesov"]
-  # dependencies defined in Gemfile
-end
-Jeweler::RubygemsDotOrgTasks.new
-
 require 'rake/testtask'
 Rake::TestTask.new(:test) do |test|
   test.libs << 'lib' << 'test'
   test.pattern = 'test/**/test_*.rb'
   test.verbose = true
 end
-
-require 'rcov/rcovtask'
-Rcov::RcovTask.new do |test|
-  test.libs << 'test'
-  test.pattern = 'test/**/test_*.rb'
-  test.verbose = true
-  test.rcov_opts << '--exclude "gems/*"'
-end
-
-task :default => :test
 
 require 'rdoc/task'
 Rake::RDocTask.new do |rdoc|
@@ -51,3 +27,5 @@ Rake::RDocTask.new do |rdoc|
   rdoc.rdoc_files.include('README*')
   rdoc.rdoc_files.include('lib/**/*.rb')
 end
+
+task :default => :test
