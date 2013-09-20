@@ -28,6 +28,7 @@ module FlexibleAccessibility
             result[key] = args[key].map!{ |v| v.to_s }.to_set
           end
         end
+        result
       end
     end
  

@@ -26,9 +26,9 @@ module FlexibleAccessibility
   	# We checks access to route and we expected the existing of current_user helper
   	def check_permission_to_route
       raise UserNotLoggedInException.new(current_route, nil) if current_user.nil?
-      if self.class.instance_variable_get(:@_verifiable_routes).include? current_action.to_sym
+      if self.class.instance_variable_get(:@_verifiable_routes).include? current_action
   	    self.class.instance_variable_set(:@_route_permitted, Permission.is_action_permitted_for_user?(current_route, current_user))
-      elsif self.class.instance_variable_get(:@_non_verifiable_routes).include? current_action.to_sym
+      elsif self.class.instance_variable_get(:@_non_verifiable_routes).include? current_action
         self.class.instance_variable_set(:@_route_permitted, true)
       else
         self.class.instance_variable_set(:@_route_permitted, false)
@@ -37,7 +37,7 @@ module FlexibleAccessibility
 
   	# We checks @authorized variable state
   	def check_if_route_is_permitted
-  	  raise AccessDeniedException.new(current_route, nil) unless self.class.instance_variable_get :@_route_permitted
+  	  raise AccessDeniedException.new(current_route, nil) unless self.class.instance_variable_get(:@_route_permitted)
 	  end
   end
 
