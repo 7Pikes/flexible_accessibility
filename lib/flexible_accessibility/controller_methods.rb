@@ -2,24 +2,32 @@ module FlexibleAccessibility
   module ControllerMethods
   	module ClassMethods
 
-      # Macro for skip authorization
-      def skip_authorization_here
-        self.instance_variable_set(:@_route_permitted, true)
-        self.instance_variable_set(:@_verifiable_routes, [])
+      # Macro for define actions without authorization
+      def skip_authorization(args={})
+        valid_arguments = parse_and_validate_arguments(args)
+        self.instance_variable_set(:@_verifiable_routes, self.action_methods) if valid_arguments[:all]
+        self.instance_variable_set(:@_non_verifiable_routes, valid_arguments[:on]) unless valid_arguments[:on].nil?
       end
 
-      # Macro for define authorization
+      # Macro for define actions with authorization
   	  def authorize(args={})
-        self.instance_variable_set(:@_route_permitted, false)
-        set_actions_to_authorize(args)
+        valid_arguments = parse_and_validate_arguments(args)
+        self.instance_variable_set(:@_verifiable_routes, valid_arguments[:only]) unless valid_arguments[:only].nil?
+        self.instance_variable_set(:@_verifiable_routes, self.action_methods - valid_arguments[:except]) unless valid_arguments[:except].nil?
+        self.instance_variable_set(:@_verifiable_routes, self.action_methods) if valid_arguments[:all]
   	  end
       
       private
-      # Set actions for authorize as instance variable
-      def set_actions_to_authorize(args={})
-        self.instance_variable_set(:@_verifiable_routes, args[:only]) unless args[:only].nil?
-        # TODO: understand and fix it
-        self.instance_variable_set(:@_verifiable_routes, self.action_methods - args[:except]) unless args[:except].nil?
+      # Parse arguments from macro calls
+      def parse_and_validate_arguments(args={})
+        result = {}
+        (result[:all] = true) and return if args.to_s == "all" || args.to_s == "everywhere"
+        [:on, :only, :except].each do |key|
+          unless args[key].nil?
+            raise ActionsValueException unless args[key].instance_of?(Array)
+            result[key] = args[key].map!{ |v| v.to_s }.to_set
+          end
+        end
       end
     end
  
