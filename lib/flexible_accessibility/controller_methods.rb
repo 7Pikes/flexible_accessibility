@@ -23,7 +23,7 @@ module FlexibleAccessibility
       # Parse arguments from macro calls
       def parse_and_validate_arguments(args={})
         result = {}
-        (result[:all] = true) and return if args.to_s == "all" || args.to_s == "everywhere"
+        (result[:all] = true) and return result if args.to_s == "all" || args.to_s == "everywhere"
         [:on, :only, :except].each do |key|
           unless args[key].nil?
             raise ActionsValueException unless args[key].instance_of?(Array)
