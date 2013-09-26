@@ -7,7 +7,7 @@ module FlexibleAccessibility
         valid_arguments = parse_and_validate_arguments(args)
         self.instance_variable_set(:@_non_verifiable_routes, self.action_methods) if valid_arguments[:all]
         self.instance_variable_set(:@_non_verifiable_routes, valid_arguments[:on]) unless valid_arguments[:on].nil?
-        self.instance_variable_set(:@_verifiable_routes, [])
+        self.instance_variable_set(:@_verifiable_routes, []) if self.instance_variable_get(:@_non_verifiable_routes).nil?
       end
 
       # Macro for define actions with authorization
@@ -16,7 +16,8 @@ module FlexibleAccessibility
         self.instance_variable_set(:@_verifiable_routes, valid_arguments[:only]) unless valid_arguments[:only].nil?
         self.instance_variable_set(:@_verifiable_routes, self.action_methods - valid_arguments[:except]) unless valid_arguments[:except].nil?
         self.instance_variable_set(:@_verifiable_routes, self.action_methods) if valid_arguments[:all]
-        self.instance_variable_set(:@_non_verifiable_routes, [])
+        self.instance_variable_set(:@_non_verifiable_routes, []) if self.instance_variable_get(:@_non_verifiable_routes).nil?
+        # TODO: get info from routes
   	  end
       
       private
