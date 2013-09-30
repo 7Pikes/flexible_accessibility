@@ -29,13 +29,15 @@ module FlexibleAccessibility
       raise NoWayToDetectLoggerUserException unless defined?(current_user)
     end
 
-  	# Check access to route
+  	# Check access to route and we expected the existing of current_user helper
   	def check_permission_to_route
-      if self.class.instance_variable_get(:@_checkable_routes).include? current_action.to_sym
+      if self.class.instance_variable_get(:@_verifiable_routes).include? current_action
         raise UserNotLoggedInException.new(current_route, nil) if logged_user.nil?
   	    self.class.instance_variable_set(:@_route_permitted, AccessProvider.is_action_permitted_for_user?(current_route, logged_user))
-      else
+      elsif self.class.instance_variable_get(:@_non_verifiable_routes).include? current_action
         self.class.instance_variable_set(:@_route_permitted, true)
+      else
+        self.class.instance_variable_set(:@_route_permitted, false)
   	  end
   	end
 
