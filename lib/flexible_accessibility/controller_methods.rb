@@ -19,7 +19,7 @@ module FlexibleAccessibility
         self.instance_variable_set(:@_non_verifiable_routes, []) if self.instance_variable_get(:@_non_verifiable_routes).nil?
         # TODO: get info from routes
   	  end
-      
+
       private
       # Parse arguments from macro calls
       def parse_and_validate_arguments(args={})
@@ -43,7 +43,8 @@ module FlexibleAccessibility
     
     # Check the url for each link in view to show it
     def has_access?(permission, user)
-      Permission.is_action_permitted_for_user?(permission, user)
+      raise UnknownUserException if user.nil?
+      AccessProvider.is_action_permitted_for_user?(permission, user)
     end
   end
 end
@@ -51,6 +52,6 @@ end
 # Include methods in ActionController::Base
 if defined?(ActionController::Base)
 	ActionController::Base.class_eval do
-	  include FlexibleAccessibility::ControllerMethods	
+	  include FlexibleAccessibility::ControllerMethods
 	end
 end
