@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    flexible_accessibility (0.3.0)
+    flexible_accessibility (0.3.1)
 
 GEM
   remote: http://rubygems.org/
@@ -29,4 +29,3 @@ DEPENDENCIES
   i18n
   rdoc
   rspec
-
