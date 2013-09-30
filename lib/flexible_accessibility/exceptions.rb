@@ -65,17 +65,6 @@ module FlexibleAccessibility
     end
   end
 
-  class NoWayToLoadPermissionsException < FlexibleAccessibilityException
-    private
-    def message
-      I18n.t('flexible_accessibility.errors.no_way_to_load_permissions')
-    end
-
-    def default_message
-      "Probably you have forgot to define available_permissions accessor in your model for user"
-    end
-  end
-
   class ActionsValueException < FlexibleAccessibilityException
     private
     def message

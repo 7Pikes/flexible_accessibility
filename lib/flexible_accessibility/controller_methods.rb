@@ -39,17 +39,12 @@ module FlexibleAccessibility
     def self.included(base)
       base.extend(ClassMethods)
       base.helper_method(:has_access?)
-      base.helper_method(:load_permissions)
     end
     
     # Check the url for each link in view to show it
     def has_access?(permission, user)
       raise UnknownUserException if user.nil?
       AccessProvider.is_action_permitted_for_user?(permission, user)
-    end
-
-    def load_permissions(user)
-      AccessProvider.preload_permissions(user)
     end
   end
 end
