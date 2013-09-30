@@ -2,8 +2,6 @@
 *.rbc
 .bundle
 .config
-*.sublime-project
-*.sublime-workspace
 coverage
 InstalledFiles
 lib/bundler/man
@@ -13,10 +11,7 @@ spec/reports
 test/tmp
 test/version_tmp
 tmp
-.rvmrc
-.DS_Store
-.idea
 .yardoc
 _yardoc
 doc/
-nbproject
+
