@@ -2,12 +2,13 @@ module FlexibleAccessibility
   class AccessProvider
     class << self
       def preload_permissions(user)
-        raise NoWayToLoadPermissionsException unless user.respond_to? :available_permissions=
-        user.available_permissions = AccessRule.where(:owner => user.id).map(&:permission)
+        if user.instance_variable_get(:@_available_permissions).nil?
+          user.instance_variable_set(:@_available_permissions, AccessRule.where(:owner => user.id).map(&:permission))
+        end
       end
 
       def is_action_permitted_for_user?(permission, user)
-        user.available_permissions.include? permission
+        user.instance_variable_get(:@_available_permissions).include? permission
       end
     end
   end
