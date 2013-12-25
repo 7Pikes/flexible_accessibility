@@ -8,7 +8,7 @@ Installation:
 
   or add to your Gemfile
 
-		gem 'flexible_accessibility', '0.3.1'
+		gem 'flexible_accessibility', '0.3.2'
 
   Do
 
@@ -19,6 +19,6 @@ Installation:
 ======================
 
 ## Copyright
-Copyright (c) 2012-2013 Sergey Awanesov and 7 Pikes, Inc.
+Copyright (c) 2012-2013 Sergey Avanesov and 7 Pikes, Inc.
 
 ![7pikes logo](https://github.com/7Pikes/flexible_accessibility/wiki/Logo.png)
