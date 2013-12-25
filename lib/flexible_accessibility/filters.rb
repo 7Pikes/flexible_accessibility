@@ -39,7 +39,15 @@ module FlexibleAccessibility
       else
         self.class.instance_variable_set(:@_route_permitted, false)
   	  end
-  	end
+    end
+
+    def allow_route
+      self.class.instance_variable_set(:@_route_permitted, true)
+    end
+
+    def deny_route
+      self.class.instance_variable_set(:@_route_permitted, false)
+    end
 
   	# Check the @authorized variable state
   	def check_if_route_is_permitted
