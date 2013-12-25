@@ -17,7 +17,7 @@ module FlexibleAccessibility
     end
 
     def default_message
-      "An exception is occured"
+      'An exception is occurred'
     end
   end
 
@@ -28,7 +28,7 @@ module FlexibleAccessibility
     end
 
     def default_message
-		  "The acess for resoure #{@action} is denied"
+		  "The access for resource #{@action} is denied"
     end
 	end
 
@@ -39,7 +39,7 @@ module FlexibleAccessibility
     end
 
     def default_message
-      "Current user is not logged in"
+      'Current user is not logged in'
     end
   end
 
@@ -50,7 +50,7 @@ module FlexibleAccessibility
     end
 
     def default_message
-      "No way to detect a logged user - may you have forgot to define a current_user helper"
+      'No way to detect a logged user - may you have forgot to define a current_user helper'
     end
   end
  
@@ -61,7 +61,7 @@ module FlexibleAccessibility
     end
 
     def default_message
-      "Probably you have forgot to send a user in has_access?"
+      'Probably you have forgot to send a user in has_access?'
     end
   end
 
@@ -72,7 +72,7 @@ module FlexibleAccessibility
     end
 
     def default_message
-      "The value of any 'authorize' macro argument should be declared as Array"
+      'The value of any \'authorize\' macro argument should be declared as Array'
     end
   end
 end
