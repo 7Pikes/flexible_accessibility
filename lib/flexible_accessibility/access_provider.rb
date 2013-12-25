@@ -3,7 +3,7 @@ module FlexibleAccessibility
     class << self
       def preload_permissions(user)
         if user.instance_variable_get(:@_available_permissions).nil?
-          user.instance_variable_set(:@_available_permissions, AccessRule.where(:owner => user.id).map(&:permission))
+          user.instance_variable_set(:@_available_permissions, AccessRule.where(:owner_id => user.id).map(&:permission))
         end
       end
 
