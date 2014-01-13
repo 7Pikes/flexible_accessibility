@@ -40,9 +40,8 @@ module FlexibleAccessibility
         args[:except] ||= Set.new
         args[:skip] ||= Set.new
         unless (args[:only] & args[:except]).empty? &&
-               (args[:only] & args[:skip]).empty? &&
-               (args[:skip] & args[:except]).empty?
-          raise IncorrectArgumentException.new(nil, 'The same arguments shouldn\'t be used with different keys')
+               (args[:only] & args[:skip]).empty?
+          raise IncorrectArgumentException.new(nil, 'The same arguments shouldn\'t be used with different keys excluding except and skip')
         end
         if args[:skip] == 'all' && args.count > 1
           raise IncorrectArgumentException.new(nil, 'Option \'skip\' with argument \'all\' shouldn\'t be used with another options')
