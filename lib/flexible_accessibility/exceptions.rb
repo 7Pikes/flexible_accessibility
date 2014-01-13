@@ -1,6 +1,6 @@
 module FlexibleAccessibility
   class FlexibleAccessibilityException < StandardError
-    attr_reader :action, :subject, :default_message
+    attr_reader :action, :subject
 
     def initialize(action = nil, subject = nil)
       @action = action
@@ -8,7 +8,7 @@ module FlexibleAccessibility
     end
 
     def to_s
-      message || default_message
+      message || default_message || @subject
     end
 
     private
@@ -73,6 +73,14 @@ module FlexibleAccessibility
 
     def default_message
       'The value of any \'authorize\' macro argument should be declared as Array'
+    end
+  end
+
+  class IncorrectArgumentException < FlexibleAccessibilityException
+
+    private
+    def default_message
+      nil
     end
   end
 end
