@@ -11,7 +11,7 @@ module FlexibleAccessibility
   	  def authorize(args={})
         arguments = parse_arguments(args)
         validate_arguments(arguments)
-        available_routes = Utils.new.app_routes[self.to_s.to_sym].to_set
+        available_routes = Utils.new.app_routes[self.to_s.gsub(/Controller/, '')].to_set
         self.instance_variable_set(:@_verifiable_routes, available_routes) if arguments[:all]
         self.instance_variable_set(:@_verifiable_routes, arguments[:only]) unless arguments[:only].nil?
         self.instance_variable_set(:@_verifiable_routes, available_routes - arguments[:except]) unless arguments[:except].nil?

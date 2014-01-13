@@ -37,7 +37,7 @@ module FlexibleAccessibility
       Rails.application.routes.routes.each do |route|
         controller = route.defaults[:controller]
         unless controller.nil?
-          key = controller.split('/').map { |p| p.camelize }.join('::').to_sym
+          key = controller.split('/').map { |p| p.camelize }.join('::')
           @@routes[key] ||= []
           @@routes[key] << route.defaults[:action]
         end
