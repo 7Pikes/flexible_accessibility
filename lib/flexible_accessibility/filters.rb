@@ -31,14 +31,17 @@ module FlexibleAccessibility
 
   	# Check access to route and we expected the existing of current_user helper
   	def check_permission_to_route
+      self.class.instance_variable_set(:@_verifiable_routes, []) if self.class.instance_variable_get(:@_verifiable_routes).nil?
+      self.class.instance_variable_set(:@_non_verifiable_routes, []) if self.class.instance_variable_get(:@_non_verifiable_routes).nil?
+
       if self.class.instance_variable_get(:@_verifiable_routes).include?(current_action)
         raise UserNotLoggedInException.new(current_route, nil) if logged_user.nil?
-  	    self.class.instance_variable_set(:@_route_permitted, AccessProvider.is_action_permitted_for_user?(current_route, logged_user))
+        self.class.instance_variable_set(:@_route_permitted, AccessProvider.is_action_permitted_for_user?(current_route, logged_user))
       elsif self.class.instance_variable_get(:@_non_verifiable_routes).include? current_action
         self.class.instance_variable_set(:@_route_permitted, true)
       else
         self.class.instance_variable_set(:@_route_permitted, false)
-  	  end
+      end
     end
 
     def allow_route

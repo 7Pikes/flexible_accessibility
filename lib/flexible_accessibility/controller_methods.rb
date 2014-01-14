@@ -4,38 +4,53 @@ module FlexibleAccessibility
 
       # Compatibility with previous versions
       def skip_authorization_here
-        not_authorize :all
-      end
-
-      # Macro for define actions without authorization
-      def not_authorize(args={})
-        valid_arguments = parse_and_validate_arguments(args)
-        self.instance_variable_set(:@_non_verifiable_routes, self.action_methods) if valid_arguments[:all]
-        self.instance_variable_set(:@_non_verifiable_routes, valid_arguments[:only]) unless valid_arguments[:only].nil?
-        self.instance_variable_set(:@_verifiable_routes, []) if self.instance_variable_get(:@_non_verifiable_routes).nil?
+        authorize :skip => :all
       end
 
       # Macro for define actions with authorization
   	  def authorize(args={})
-        valid_arguments = parse_and_validate_arguments(args)
-        self.instance_variable_set(:@_verifiable_routes, valid_arguments[:only]) unless valid_arguments[:only].nil?
-        self.instance_variable_set(:@_verifiable_routes, self.action_methods - valid_arguments[:except]) unless valid_arguments[:except].nil?
-        self.instance_variable_set(:@_verifiable_routes, self.action_methods) if valid_arguments[:all]
-        self.instance_variable_set(:@_non_verifiable_routes, []) if self.instance_variable_get(:@_non_verifiable_routes).nil?
+        arguments = parse_arguments(args)
+        validate_arguments(arguments)
+        available_routes = Utils.new.app_routes[self.to_s.gsub(/Controller/, '')]
+        available_routes = available_routes.to_set unless available_routes.nil?
+        unless available_routes.nil?
+          self.instance_variable_set(:@_verifiable_routes, available_routes) if arguments[:all]
+          self.instance_variable_set(:@_verifiable_routes, arguments[:only]) unless arguments[:only].nil?
+          self.instance_variable_set(:@_verifiable_routes, available_routes - arguments[:except]) unless arguments[:except].nil?
+          unless arguments[:skip].nil?
+            non_verifiable_routes = arguments[:skip].first == 'all' ? available_routes : arguments[:skip]
+            self.instance_variable_set(:@_non_verifiable_routes, non_verifiable_routes)
+          end
+        end
   	  end
 
       private
       # Parse arguments from macro calls
-      def parse_and_validate_arguments(args={})
+      def parse_arguments(args={})
         result = {}
-        (result[:all] = true) and return result if args.to_s == 'all'
-        [:only, :except].each do |key|
+        (result[:all] = ['all'].to_set) and return result if args.to_s == 'all'
+        [:only, :except, :skip].each do |key|
           unless args[key].nil?
+            result[key] = [args[key].to_s].to_set and next if args[key].to_s == 'all' && key == :skip
             raise ActionsValueException unless args[key].instance_of?(Array)
             result[key] = args[key].map!{ |v| v.to_s }.to_set
           end
         end
         result
+      end
+
+      def validate_arguments(args={})
+        return if args.count == 1 && args.keys.include?(:all)
+        only_options = args[:only] || Set.new
+        except_options =  args[:except] || Set.new
+        skip_options = args[:skip] || Set.new
+        unless (only_options & except_options).empty? &&
+               (only_options & skip_options).empty?
+          raise IncorrectArgumentException.new(nil, 'The same arguments shouldn\'t be used with different keys excluding except and skip')
+        end
+        if args[:skip] == 'all' && args.count > 1
+          raise IncorrectArgumentException.new(nil, 'Option \'skip\' with argument \'all\' shouldn\'t be used with another options')
+        end
       end
     end
  
