@@ -8,7 +8,7 @@ Installation:
 
   or add to your Gemfile
 
-		gem 'flexible_accessibility', '0.3.3'
+		gem 'flexible_accessibility', '~> 0.3.4'
 
   then do
 
