@@ -2,9 +2,9 @@
 
 Gem::Specification.new do |s|
   s.name = 'flexible_accessibility'
-  s.version = '0.3.3'
+  s.version = '0.3.4'
   s.authors = ['Sergey Avanesov']
-  s.date = '2014-01-08'
+  s.date = '2014-01-14'
   s.summary = 'Flexible access control system'
   s.description = 'Flexible access control system for your rails application. Based on analysis of controller actions'
   s.email = 'sergey.awanesov@gmail.com'
