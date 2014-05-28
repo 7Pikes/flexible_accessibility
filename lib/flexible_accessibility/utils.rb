@@ -19,6 +19,7 @@ module FlexibleAccessibility
     private
     # All controller classes placed in :default scope
     def app_controllers_recursive(path)
+      excluded_controllers = ['..', '.', 'concerns']
       (Dir.entries(path) - excluded_controllers).each do |entry|
         if File.directory?(path + entry)
           app_controllers_recursive(path + entry + '/')
@@ -44,10 +45,6 @@ module FlexibleAccessibility
           @@routes[key] << route.defaults[:action]
         end
       end
-    end
-
-    def excluded_controllers
-      ['..', '.', 'concerns']
     end
   end
 end
