@@ -2,6 +2,8 @@ Flexible Accessibility
 
 A simple library for setting access rules, based on analysis of current resources (e.g. controllers (with namespaces) and actions) that exists in application.
 
+[![Code Climate](https://codeclimate.com/github/7Pikes/flexible_accessibility.png)](https://codeclimate.com/github/7Pikes/flexible_accessibility)
+
 Installation:
 
 		gem install flexible_accessibility
