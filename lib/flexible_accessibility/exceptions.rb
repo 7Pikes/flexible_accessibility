@@ -88,4 +88,13 @@ module FlexibleAccessibility
       nil
     end
   end
+
+  class NoWayToDetectAvailableRoutesException < FlexibleAccessibilityException
+
+    private
+
+    def default_message
+      'No way to detect an available routes'
+    end
+  end
 end

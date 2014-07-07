@@ -12,15 +12,16 @@ module FlexibleAccessibility
         arguments = parse_arguments(args)
         validate_arguments(arguments)
         available_routes = Utils.new.app_routes[self.to_s.gsub(/Controller/, '')]
-        available_routes = available_routes.to_set unless available_routes.nil?
-        unless available_routes.nil?
-          self.instance_variable_set(:@_verifiable_routes, available_routes) if arguments[:all]
-          self.instance_variable_set(:@_verifiable_routes, arguments[:only]) unless arguments[:only].nil?
-          self.instance_variable_set(:@_verifiable_routes, available_routes - arguments[:except]) unless arguments[:except].nil?
-          unless arguments[:skip].nil?
-            non_verifiable_routes = arguments[:skip].first == 'all' ? available_routes : arguments[:skip]
-            self.instance_variable_set(:@_non_verifiable_routes, non_verifiable_routes)
-          end
+        # available_routes = self.action_methods if available_routes.nil?
+        raise NoWayToDetectAvailableRoutesException if available_routes.nil?
+        
+        self.instance_variable_set(:@_verifiable_routes, available_routes) if arguments[:all]
+        self.instance_variable_set(:@_verifiable_routes, arguments[:only]) unless arguments[:only].nil?
+        self.instance_variable_set(:@_verifiable_routes, available_routes - arguments[:except]) unless arguments[:except].nil?
+        
+        unless arguments[:skip].nil?
+          non_verifiable_routes = arguments[:skip].first == 'all' ? available_routes : arguments[:skip]
+          self.instance_variable_set(:@_non_verifiable_routes, non_verifiable_routes)
         end
   	  end
 

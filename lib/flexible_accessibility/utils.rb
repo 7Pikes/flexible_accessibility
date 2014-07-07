@@ -13,7 +13,7 @@ module FlexibleAccessibility
 
     def app_routes
       app_routes_as_hash if @@routes.empty?
-      @@routes
+      @@routes.to_set
     end
 
     private
@@ -37,6 +37,7 @@ module FlexibleAccessibility
 
     # Routes from routes.rb
     def app_routes_as_hash
+      Rails.application.eager_load!
       Rails.application.routes.routes.each do |route|
         controller = route.defaults[:controller]
         unless controller.nil?
