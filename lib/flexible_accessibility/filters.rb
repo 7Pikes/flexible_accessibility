@@ -61,7 +61,7 @@ module FlexibleAccessibility
       available_routes = Utils.new.app_routes[self.to_s.gsub(/Controller/, '')]
       # available_routes = self.action_methods if available_routes.nil?
       raise NoWayToDetectAvailableRoutesException if available_routes.nil?
-      available_routes
+      available_routes.to_set
     end
 
     def allow_route

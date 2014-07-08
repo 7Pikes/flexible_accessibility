@@ -13,7 +13,7 @@ module FlexibleAccessibility
 
     def app_routes
       app_routes_as_hash if @@routes.empty?
-      @@routes.to_set
+      @@routes
     end
 
     private
