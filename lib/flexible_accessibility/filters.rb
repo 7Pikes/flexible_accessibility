@@ -42,7 +42,7 @@ module FlexibleAccessibility
     end
 
     def verifiable_routes_list
-      routes_table = self.instance_variable_get(:@_routes_table)
+      routes_table = self.class.instance_variable_get(:@_routes_table)
         
       return available_routes_list if routes_table[:all]
       return routes_table[:only] unless routes_table[:only].nil?
@@ -50,7 +50,7 @@ module FlexibleAccessibility
     end
 
     def non_verifiable_routes_list
-      routes_table = self.instance_variable_get(:@_routes_table)
+      routes_table = self.class.instance_variable_get(:@_routes_table)
       unless routes_table[:skip].nil?
         return routes_table[:skip].first == 'all' ? available_routes_list : routes_table[:skip]
       end
