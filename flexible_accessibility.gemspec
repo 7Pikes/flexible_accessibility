@@ -2,7 +2,7 @@
 
 Gem::Specification.new do |s|
   s.name = 'flexible_accessibility'
-  s.version = '0.3.7'
+  s.version = '0.3.8'
   s.authors = ['Sergey Avanesov']
   s.date = '2014-05-27'
   s.summary = 'Flexible access control system'

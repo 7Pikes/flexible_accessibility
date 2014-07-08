@@ -31,17 +31,37 @@ module FlexibleAccessibility
 
   	# Check access to route and we expected the existing of current_user helper
   	def check_permission_to_route
-      self.class.instance_variable_set(:@_verifiable_routes, []) if self.class.instance_variable_get(:@_verifiable_routes).nil?
-      self.class.instance_variable_set(:@_non_verifiable_routes, []) if self.class.instance_variable_get(:@_non_verifiable_routes).nil?
-
-      if self.class.instance_variable_get(:@_verifiable_routes).include?(current_action)
+      if verifiable_routes_list.include?(current_action)
         raise UserNotLoggedInException.new(current_route, nil) if logged_user.nil?
-        self.class.instance_variable_set(:@_route_permitted, AccessProvider.is_action_permitted_for_user?(current_route, logged_user))
-      elsif self.class.instance_variable_get(:@_non_verifiable_routes).include? current_action
-        self.class.instance_variable_set(:@_route_permitted, true)
+        AccessProvider.is_action_permitted_for_user?(current_route, logged_user) ? allow_route : deny_route
+      elsif non_verifiable_routes_list.include?(current_action)
+        allow_route
       else
-        self.class.instance_variable_set(:@_route_permitted, false)
+        deny_route
       end
+    end
+
+    def verifiable_routes_list
+      routes_table = self.instance_variable_get(:@_routes_table)
+        
+      return available_routes_list if routes_table[:all]
+      return routes_table[:only] unless routes_table[:only].nil?
+      return available_routes_list - routes_table[:except] unless routes_table[:except].nil?  
+    end
+
+    def non_verifiable_routes_list
+      routes_table = self.instance_variable_get(:@_routes_table)
+      unless routes_table[:skip].nil?
+        return routes_table[:skip].first == 'all' ? available_routes_list : routes_table[:skip]
+      end
+    end
+
+    # TODO: Move to RouteProvider
+    def available_routes_list
+      available_routes = Utils.new.app_routes[self.to_s.gsub(/Controller/, '')]
+      # available_routes = self.action_methods if available_routes.nil?
+      raise NoWayToDetectAvailableRoutesException if available_routes.nil?
+      available_routes
     end
 
     def allow_route
@@ -52,7 +72,7 @@ module FlexibleAccessibility
       self.class.instance_variable_set(:@_route_permitted, false)
     end
 
-  	# Check the @authorized variable state
+  	# Check the @_route_permitted variable state
   	def check_if_route_is_permitted
   	  raise AccessDeniedException.new(current_route, nil) unless self.class.instance_variable_get(:@_route_permitted)
 	  end

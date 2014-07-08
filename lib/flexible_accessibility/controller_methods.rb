@@ -7,26 +7,17 @@ module FlexibleAccessibility
         authorize :skip => :all
       end
 
-      # Macro for define actions with authorization
+      # Macro for define routes table with authorization
   	  def authorize(args={})
         arguments = parse_arguments(args)
+        
         validate_arguments(arguments)
-        available_routes = Utils.new.app_routes[self.to_s.gsub(/Controller/, '')]
-        # available_routes = self.action_methods if available_routes.nil?
-        raise NoWayToDetectAvailableRoutesException if available_routes.nil?
-        
-        self.instance_variable_set(:@_verifiable_routes, available_routes) if arguments[:all]
-        self.instance_variable_set(:@_verifiable_routes, arguments[:only]) unless arguments[:only].nil?
-        self.instance_variable_set(:@_verifiable_routes, available_routes - arguments[:except]) unless arguments[:except].nil?
-        
-        unless arguments[:skip].nil?
-          non_verifiable_routes = arguments[:skip].first == 'all' ? available_routes : arguments[:skip]
-          self.instance_variable_set(:@_non_verifiable_routes, non_verifiable_routes)
-        end
+
+        self.class.instance_variable_set(:@_routes_table, arguments)        
   	  end
 
       private
-      # Parse arguments from macro calls
+      # Parse arguments from macro call
       def parse_arguments(args={})
         result = {}
         (result[:all] = ['all'].to_set) and return result if args.to_s == 'all'
@@ -40,6 +31,7 @@ module FlexibleAccessibility
         result
       end
 
+      # Validate arguments from macro call
       def validate_arguments(args={})
         return if args.count == 1 && args.keys.include?(:all)
         only_options = args[:only] || Set.new

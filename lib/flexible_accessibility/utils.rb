@@ -37,7 +37,6 @@ module FlexibleAccessibility
 
     # Routes from routes.rb
     def app_routes_as_hash
-      Rails.application.reload_routes!
       Rails.application.routes.routes.each do |route|
         controller = route.defaults[:controller]
         unless controller.nil?
