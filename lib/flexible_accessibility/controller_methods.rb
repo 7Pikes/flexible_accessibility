@@ -13,7 +13,7 @@ module FlexibleAccessibility
         
         validate_arguments(arguments)
 
-        self.class.instance_variable_set(:@_routes_table, arguments)        
+        self.instance_variable_set(:@_routes_table, arguments)        
   	  end
 
       private
