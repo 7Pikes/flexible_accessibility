@@ -46,14 +46,16 @@ module FlexibleAccessibility
         
       return available_routes_list if routes_table[:all]
       return routes_table[:only] unless routes_table[:only].nil?
-      return available_routes_list - routes_table[:except] unless routes_table[:except].nil?  
+      return available_routes_list - routes_table[:except] unless routes_table[:except].nil?
+      return []  
     end
 
     def non_verifiable_routes_list
-      routes_table = self.class.instance_variable_get(:@_routes_table)
       unless routes_table[:skip].nil?
+        routes_table = self.class.instance_variable_get(:@_routes_table)
         return routes_table[:skip].first == 'all' ? available_routes_list : routes_table[:skip]
       end
+      return []
     end
 
     # TODO: Move to RouteProvider
