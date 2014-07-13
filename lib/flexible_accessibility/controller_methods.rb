@@ -17,6 +17,7 @@ module FlexibleAccessibility
   	  end
 
       private
+      
       # Parse arguments from macro call
       def parse_arguments(args={})
         result = {}
@@ -46,17 +47,17 @@ module FlexibleAccessibility
         end
       end
     end
+
+    # Check the url for each link in view to show it
+    def has_access?(permission, user)
+      raise UnknownUserException if user.nil?
+      AccessProvider.is_action_permitted_for_user?(permission, user)
+    end
  
     # Callback is needed for include methods and define helper method
     def self.included(base)
       base.extend(ClassMethods)
       base.helper_method(:has_access?)
-    end
-    
-    # Check the url for each link in view to show it
-    def has_access?(permission, user)
-      raise UnknownUserException if user.nil?
-      AccessProvider.is_action_permitted_for_user?(permission, user)
     end
   end
 end
