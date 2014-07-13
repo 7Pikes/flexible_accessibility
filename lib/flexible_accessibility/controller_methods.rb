@@ -1,6 +1,6 @@
 module FlexibleAccessibility
   module ControllerMethods
-  	module ClassMethods
+    module ClassMethods
 
       # Compatibility with previous versions
       def skip_authorization_here
@@ -8,13 +8,13 @@ module FlexibleAccessibility
       end
 
       # Macro for define routes table with authorization
-  	  def authorize(args={})
+      def authorize(args={})
         arguments = parse_arguments(args)
         
         validate_arguments(arguments)
 
         self.instance_variable_set(:@_routes_table, arguments)        
-  	  end
+      end
 
       private
       
@@ -64,7 +64,7 @@ end
 
 # Include methods in ActionController::Base
 if defined?(ActionController::Base)
-	ActionController::Base.class_eval do
-	  include FlexibleAccessibility::ControllerMethods
-	end
+  ActionController::Base.class_eval do
+    include FlexibleAccessibility::ControllerMethods
+  end
 end
