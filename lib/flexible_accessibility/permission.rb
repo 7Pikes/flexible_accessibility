@@ -20,7 +20,7 @@ module FlexibleAccessibility
     class << self
   	  def all
   			permissions = []
-  			Utils.new.app_controllers.each do |scope|
+  			RouteProvider.new.app_controllers.each do |scope|
   				namespace = scope.first.to_s
   			  scope.last.each do |resource|
   			  	resource = "#{namespace}/#{resource}" unless namespace == 'default'

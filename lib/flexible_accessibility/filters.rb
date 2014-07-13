@@ -60,7 +60,7 @@ module FlexibleAccessibility
 
     # TODO: Move to RouteProvider
     def available_routes_list
-      available_routes = Utils.new.app_routes[self.class.to_s.gsub(/Controller/, '')]
+      available_routes = RouteProvider.new.app_routes[self.class.to_s.gsub(/Controller/, '')]
       # available_routes = self.action_methods if available_routes.nil?
       raise NoWayToDetectAvailableRoutesException if available_routes.nil?
       available_routes.to_set
