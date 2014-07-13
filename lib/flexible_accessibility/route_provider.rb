@@ -20,6 +20,8 @@ module FlexibleAccessibility
     def verifiable_routes_list
       routes_table = @current_controller.instance_variable_get(:@_routes_table)
         
+      raise NoWayToDetectAvailableRoutesException if routes_table.nil?
+
       return available_routes_list if routes_table[:all]
       return routes_table[:only] unless routes_table[:only].nil?
       return available_routes_list - routes_table[:except] unless routes_table[:except].nil?
@@ -28,6 +30,9 @@ module FlexibleAccessibility
 
     def non_verifiable_routes_list
       routes_table = @current_controller.instance_variable_get(:@_routes_table)
+
+      raise NoWayToDetectAvailableRoutesException if routes_table.nil?
+
       unless routes_table[:skip].nil?
         return routes_table[:skip].first == 'all' ? available_routes_list : routes_table[:skip]
       end
