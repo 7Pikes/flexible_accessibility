@@ -1,10 +1,11 @@
 module FlexibleAccessibility
-  class Utils
+  class RouteProvider
     @@routes ||= {}
 
-    def initialize
+    def initialize(controller=nil)
       @path = "#{::Rails.root}/app/controllers/"
       @controllers = {}
+      @current_controller = controller
     end
 
     def app_controllers
@@ -16,7 +17,39 @@ module FlexibleAccessibility
       @@routes
     end
 
+    def verifiable_routes_list
+      routes_table, list = @current_controller.instance_variable_get(:@_routes_table), []
+        
+      unless routes_table.nil?
+        list = available_routes_list if routes_table[:all]
+        list = routes_table[:only] unless routes_table[:only].nil?
+        list = available_routes_list - routes_table[:except] unless routes_table[:except].nil?
+      end
+
+      list
+    end
+
+    def non_verifiable_routes_list
+      routes_table, list = @current_controller.instance_variable_get(:@_routes_table), []
+
+      unless routes_table.nil?
+        unless routes_table[:skip].nil?
+          list = routes_table[:skip].first == 'all' ? available_routes_list : routes_table[:skip]
+        end
+      end
+
+      list
+    end
+
     private
+
+    def available_routes_list
+      available_routes = self.app_routes[@current_controller.to_s.gsub(/Controller/, '')]
+      # available_routes = self.action_methods if available_routes.nil?
+      raise NoWayToDetectAvailableRoutesException if available_routes.nil?
+      available_routes.to_set
+    end
+
     # All controller classes placed in :default scope
     def app_controllers_recursive(path)
       invalid_entries = ['..', '.', 'concerns']

@@ -16,19 +16,20 @@ module FlexibleAccessibility
     	ApplicationResource.new(self.resource).namespace
     end
 
-		# TODO: this function may be recursive because nesting may be existed
+    # TODO: this function may be recursive because nesting may be existed
     class << self
-  	  def all
-  			permissions = []
-  			Utils.new.app_controllers.each do |scope|
-  				namespace = scope.first.to_s
-  			  scope.last.each do |resource|
-  			  	resource = "#{namespace}/#{resource}" unless namespace == 'default'
-  			  	permissions << Permission.new(:resource => resource.gsub(/_controller/, ''), :actions => ApplicationResource.new(resource).klass.instance_variable_get(:@_verifiable_routes))
-  			  end
-  			end
-  			permissions
-    	end
+      def all
+        permissions = []
+        RouteProvider.new.app_controllers.each do |scope|
+          namespace = scope.first.to_s
+          scope.last.each do |resource|
+            resource = "#{namespace}/#{resource}" unless namespace == 'default'
+            permissions << Permission.new(:resource => resource.gsub(/_controller/, ''), 
+                                          :actions => RouteProvider.new(ApplicationResource.new(resource).klass).verifiable_routes_list)
+          end
+        end
+        permissions
+      end
     end
   end
 end

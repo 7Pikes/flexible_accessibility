@@ -1,13 +1,13 @@
 module FlexibleAccessibility
   module Filters
-  	extend ActiveSupport::Concern
+    extend ActiveSupport::Concern
 
-  	included do
-  	  append_before_filter(:check_permission_to_route)
-  	  append_before_filter(:check_if_route_is_permitted)
-  	end
+    included do
+      append_before_filter(:check_permission_to_route)
+      append_before_filter(:check_if_route_is_permitted)
+    end
 
-	  private
+    private
     # Detect current controller and action and return a permission
     def current_resource
       # ActionController::Routing::Routes.recognize_path request.env["PATH_INFO"][:controller]
@@ -29,18 +29,16 @@ module FlexibleAccessibility
       raise NoWayToDetectLoggerUserException unless defined?(current_user)
     end
 
-  	# Check access to route and we expected the existing of current_user helper
-  	def check_permission_to_route
-      self.class.instance_variable_set(:@_verifiable_routes, []) if self.class.instance_variable_get(:@_verifiable_routes).nil?
-      self.class.instance_variable_set(:@_non_verifiable_routes, []) if self.class.instance_variable_get(:@_non_verifiable_routes).nil?
-
-      if self.class.instance_variable_get(:@_verifiable_routes).include?(current_action)
+    # Check access to route and we expected the existing of current_user helper
+    def check_permission_to_route
+      route_provider = RouteProvider.new(self.class)
+      if route_provider.verifiable_routes_list.include?(current_action)
         raise UserNotLoggedInException.new(current_route, nil) if logged_user.nil?
-        self.class.instance_variable_set(:@_route_permitted, AccessProvider.is_action_permitted_for_user?(current_route, logged_user))
-      elsif self.class.instance_variable_get(:@_non_verifiable_routes).include? current_action
-        self.class.instance_variable_set(:@_route_permitted, true)
+        AccessProvider.is_action_permitted_for_user?(current_route, logged_user) ? allow_route : deny_route
+      elsif route_provider.non_verifiable_routes_list.include?(current_action)
+        allow_route
       else
-        self.class.instance_variable_set(:@_route_permitted, false)
+        deny_route
       end
     end
 
@@ -52,10 +50,10 @@ module FlexibleAccessibility
       self.class.instance_variable_set(:@_route_permitted, false)
     end
 
-  	# Check the @authorized variable state
-  	def check_if_route_is_permitted
-  	  raise AccessDeniedException.new(current_route, nil) unless self.class.instance_variable_get(:@_route_permitted)
-	  end
+    # Check the @_route_permitted variable state
+    def check_if_route_is_permitted
+      raise AccessDeniedException.new(current_route, nil) unless self.class.instance_variable_get(:@_route_permitted)
+    end
   end
 
   ActiveSupport.on_load(:action_controller) do
