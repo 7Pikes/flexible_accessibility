@@ -31,39 +31,15 @@ module FlexibleAccessibility
 
   	# Check access to route and we expected the existing of current_user helper
   	def check_permission_to_route
-      if verifiable_routes_list.include?(current_action)
+      route_provider = RouteProvider.new(self.class)
+      if route_provider.verifiable_routes_list.include?(current_action)
         raise UserNotLoggedInException.new(current_route, nil) if logged_user.nil?
         AccessProvider.is_action_permitted_for_user?(current_route, logged_user) ? allow_route : deny_route
-      elsif non_verifiable_routes_list.include?(current_action)
+      elsif route_provider.non_verifiable_routes_list.include?(current_action)
         allow_route
       else
         deny_route
       end
-    end
-
-    def verifiable_routes_list
-      routes_table = self.class.instance_variable_get(:@_routes_table)
-        
-      return available_routes_list if routes_table[:all]
-      return routes_table[:only] unless routes_table[:only].nil?
-      return available_routes_list - routes_table[:except] unless routes_table[:except].nil?
-      return []  
-    end
-
-    def non_verifiable_routes_list
-      routes_table = self.class.instance_variable_get(:@_routes_table)
-      unless routes_table[:skip].nil?
-        return routes_table[:skip].first == 'all' ? available_routes_list : routes_table[:skip]
-      end
-      return []
-    end
-
-    # TODO: Move to RouteProvider
-    def available_routes_list
-      available_routes = RouteProvider.new.app_routes[self.class.to_s.gsub(/Controller/, '')]
-      # available_routes = self.action_methods if available_routes.nil?
-      raise NoWayToDetectAvailableRoutesException if available_routes.nil?
-      available_routes.to_set
     end
 
     def allow_route
