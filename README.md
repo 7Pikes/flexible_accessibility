@@ -10,7 +10,7 @@ Installation:
 
   or add to your Gemfile
 
-		gem 'flexible_accessibility', '~> 0.3.4'
+		gem 'flexible_accessibility', '~> 0.3.16'
 
   then do
 
