@@ -1,13 +1,13 @@
 module FlexibleAccessibility
   module Filters
-  	extend ActiveSupport::Concern
+    extend ActiveSupport::Concern
 
-  	included do
-  	  append_before_filter(:check_permission_to_route)
-  	  append_before_filter(:check_if_route_is_permitted)
-  	end
+    included do
+      append_before_filter(:check_permission_to_route)
+      append_before_filter(:check_if_route_is_permitted)
+    end
 
-	  private
+    private
     # Detect current controller and action and return a permission
     def current_resource
       # ActionController::Routing::Routes.recognize_path request.env["PATH_INFO"][:controller]
@@ -29,8 +29,8 @@ module FlexibleAccessibility
       raise NoWayToDetectLoggerUserException unless defined?(current_user)
     end
 
-  	# Check access to route and we expected the existing of current_user helper
-  	def check_permission_to_route
+    # Check access to route and we expected the existing of current_user helper
+    def check_permission_to_route
       route_provider = RouteProvider.new(self.class)
       if route_provider.verifiable_routes_list.include?(current_action)
         raise UserNotLoggedInException.new(current_route, nil) if logged_user.nil?
@@ -50,10 +50,10 @@ module FlexibleAccessibility
       self.class.instance_variable_set(:@_route_permitted, false)
     end
 
-  	# Check the @_route_permitted variable state
-  	def check_if_route_is_permitted
-  	  raise AccessDeniedException.new(current_route, nil) unless self.class.instance_variable_get(:@_route_permitted)
-	  end
+    # Check the @_route_permitted variable state
+    def check_if_route_is_permitted
+      raise AccessDeniedException.new(current_route, nil) unless self.class.instance_variable_get(:@_route_permitted)
+    end
   end
 
   ActiveSupport.on_load(:action_controller) do
